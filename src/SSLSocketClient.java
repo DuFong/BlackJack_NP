@@ -31,14 +31,15 @@ public class SSLSocketClient {
 		sServer = args[0];
 		sPort = Integer.parseInt(args[1]);
 		try {
+			while(true) {
 			System.out.println("Write CD-KEY : ");
 			myCDKey = is.readLine();
 			if(realCDKey.equals(myCDKey)) {
 				password = "asd123";
+				break;
 			}
-			else password = "false";
-			
-			System.out.println(password);
+			else System.out.println("You input wrong CD-KEY. Please check your CD-KEY");
+			}		
 		} catch(IOException io) {
 			System.out.println(io);
 			
@@ -48,29 +49,19 @@ public class SSLSocketClient {
 			System.setProperty("javax.net.ssl.trustStore", "trustedcerts");
 			System.setProperty("javax.net.ssl.trustStorePassword", password);
 			
-			System.out.println("1");
 			
 			f = (SSLSocketFactory) SSLSocketFactory.getDefault();
-			System.out.println("1.5");
 			c = (SSLSocket)f.createSocket(sServer, sPort);
-			
-			System.out.println("2");
-			
+						
 			String[] supported = c.getSupportedCipherSuites();
 			c.setEnabledCipherSuites(supported);
 			printSocketInfo(c);
-			
-			System.out.println("3");
-			
+						
 			c.startHandshake();
-			
-			System.out.println("4");
-			
+						
 			w = new BufferedWriter(new OutputStreamWriter(c.getOutputStream()));
 			r = new BufferedReader(new InputStreamReader(c.getInputStream()));
-			
-			System.out.println("5");
-			
+						
 			String m = null;
 			
 			while((m=r.readLine())!=null) {
